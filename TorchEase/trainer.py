@@ -1,5 +1,4 @@
 import torch
-import alive_progress
 from .modelbase import ModelBase
 class Trainer(ModelBase):
     """
@@ -135,7 +134,6 @@ class Trainer(ModelBase):
         """
         Tests the model on the testing dataset.
         """
-        import torchmetrics
         self.model.eval()
         self.test_target = []
         self.test_prediction = []
