@@ -92,7 +92,6 @@ class Trainer(ModelBase):
                     break
         self.test()
 
-
     def train(self):
         """
         Trains the model on the training dataset.
@@ -146,8 +145,6 @@ class Trainer(ModelBase):
                 self.test_prediction.append(prediction)
             self.test_target = torch.stack(self.test_target, dim=0).reshape(-1)
             self.test_prediction = torch.stack(self.test_prediction, dim=0).reshape(-1, self.n_classes)
-        #from sklearn.metrics import classification_report, confusion_matrix, roc_curve, accuracy_score
-        #self.cm = confusion_matrix(test_target=self.target, y_pred=self.fused_prediction)
 
         self.evaluation_target = self.test_target.detach().cpu().numpy()
         self.evaluation_prediction = self.test_prediction.argmax(1).detach().cpu().numpy()

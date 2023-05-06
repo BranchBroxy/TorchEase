@@ -2,20 +2,12 @@
 class ModelBase:
     """
     A base class for machine learning models.
-
-    Attributes:
-        cm (numpy.ndarray): Confusion matrix computed during evaluation.
-        evaluation_target (numpy.ndarray): True labels for evaluation.
-        evaluation_prediction (numpy.ndarray): Predicted labels for evaluation.
-
     """
     def evaluate_result(self):
         """
         Computes and displays evaluation metrics such as accuracy, precision, recall, f1-score, and confusion matrix.
         """
-        import numpy as np
-        import matplotlib.pyplot as plt
-        from sklearn.metrics import classification_report, confusion_matrix, roc_curve, accuracy_score
+        from sklearn.metrics import confusion_matrix
         target = self.evaluation_target
         prediction = self.evaluation_prediction
         self.cm = confusion_matrix(y_true=target, y_pred=prediction)

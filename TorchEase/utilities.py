@@ -6,19 +6,27 @@ class EarlyStopper:
 
     Parameters
     ----------
-        patience (int): The number of epochs to wait if the validation loss
-            does not improve before stopping early.
-        min_delta (float): The minimum change in validation loss to be
-            considered as an improvement.
+        patience (int):
+            The number of epochs to wait if the validation loss does not improve before stopping early.
+        min_delta (float):
+            The minimum change in validation loss to be considered as an improvement.
 
-    Attributes:
-        patience (int): The number of epochs to wait if the validation loss
-            does not improve before stopping early.
-        min_delta (float): The minimum change in validation loss to be
-            considered as an improvement.
-        counter (int): The number of epochs that the validation loss has not
-            improved.
-        min_loss (float): The best validation loss so far.
+    Attributes
+    ----------
+        patience (int):
+            The number of epochs to wait if the validation loss does not improve before stopping early.
+        min_delta (float):
+            The minimum change in validation loss to be considered as an improvement.
+        counter (int):
+            The number of epochs that the validation loss has not improved.
+        min_loss (float):
+            The best validation loss so far.
+
+    Examples
+    --------
+    >>> from TorchEase import EarlyStopper
+    >>> early_stop = EarlyStopper(patience=15, min_delta=0.01)
+    >>> trainer = Trainer(model=model, optimizer=optimizer, loss_fn=loss_fn, early_stop=early_stop)
     """
     def __init__(self, patience=1, min_delta=0):
         self.patience = patience

@@ -1,6 +1,8 @@
 import torch
 from .modelbase import ModelBase
 from torch.utils.data import DataLoader
+
+
 class ModelFuser(ModelBase):
     """
     Class for fusing the predictions of multiple models.
@@ -73,13 +75,13 @@ class ModelFuser(ModelBase):
         self.n_classes = 9
         self.device = device
         assert isinstance(test_loader, torch.utils.data.DataLoader), "Loader is not of type DataLoader"
+
     def fuse(self):
         """
         Fuses the predictions of all models.
         """
         import torch
         import numpy as np
-        import pandas as pd
         assert self.test_loader, "Kein Testdatensatz!"
 
         predictions = []
@@ -108,7 +110,6 @@ class ModelFuser(ModelBase):
         probabilities = probabilities.reshape((self.n_models, -1, self.n_classes))
         for i in probabilities:
             data = np.hstack([data, i])
-        # get_class(all_pred)
         fused_prediction = np.apply_along_axis(lambda row: self.apply_voting(row), axis=1, arr=data)
         result = np.vstack([all_target, fused_prediction])
         self.target = all_target.reshape(-1)
@@ -116,12 +117,6 @@ class ModelFuser(ModelBase):
         self.evaluation_target = self.target
         self.evaluation_prediction = self.fused_prediction
         self.probability = combined_probability
-        # df = pd.DataFrame(data=data, columns=["Model1", "Model2", "Model3", "Target"])
-        # df["Probabilites"] = probabilities[0]
-        # print("HERE")
-        from sklearn.metrics import confusion_matrix
-        # confusion_matrix(predictions.detach().cpu().numpy(), self.y_pred.argmax(1).detach().cpu().numpy())
-        # return result
 
     def combine_probabilities(self, row):
         """
@@ -138,9 +133,7 @@ class ModelFuser(ModelBase):
             Combined probability for each class.
         """
         import numpy as np
-        from scipy.special import softmax
         probabilities = row.reshape([self.n_models, self.n_classes])
-        #probabilities = softmax(probabilities, axis=1)
         combined_probability = np.mean(probabilities, axis=0)
         return combined_probability
 
@@ -168,7 +161,6 @@ class ModelFuser(ModelBase):
         unique_vals, counts = np.unique(vote_array, return_counts=True)
 
         if counts.shape[0] <= votes_for_results:
-            # print("Voting Successful")
             voted_value = max_val
             return voted_value
         else:

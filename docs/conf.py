@@ -24,7 +24,10 @@ copyright = '2023, Philipp Steigerwald'
 author = 'Philipp Steigerwald'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.2'
+root_dir = os.path.dirname(os.path.dirname(__file__))
+with open(os.path.join(root_dir, 'TorchEase', 'VERSION')) as version_file:
+    # The full version, including alpha/beta/rc tags.
+    release = version_file.read().strip()
 
 
 # -- General configuration ---------------------------------------------------
