@@ -3,7 +3,7 @@ name: TorchEase-PyPI
 on:
   push:
     tags:
-      - 'Release_*.*.*'
+      - 'Release_*.*.**'
       
 permissions:
   contents: read
