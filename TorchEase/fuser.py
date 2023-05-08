@@ -54,7 +54,7 @@ class ModelFuser(ModelBase):
     >>> fuser.plot_evaluate_result()
 
     """
-    def __init__(self, *models, test_loader=None, device=torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')):
+    def __init__(self, *models, n_classes, test_loader=None, device=torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')):
         """
         Initializes the ModelFuser object.
 
@@ -72,9 +72,10 @@ class ModelFuser(ModelBase):
         self.models = models
         self.n_models = len(models)
         self.test_loader = test_loader
-        self.n_classes = 9
+        self.n_classes = n_classes
         self.device = device
         assert isinstance(test_loader, torch.utils.data.DataLoader), "Loader is not of type DataLoader"
+        assert isinstance(n_classes, int), "Number of classes must be specificed!"
 
     def fuse(self):
         """
