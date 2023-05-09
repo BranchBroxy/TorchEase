@@ -2,6 +2,8 @@ name: TorchEase-TestPyPI
 
 on:
   push:
+   tags-ignore: 
+   - 'Release_*.*.**'
     
 permissions:
   contents: read
