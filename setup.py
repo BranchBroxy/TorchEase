@@ -7,7 +7,7 @@ LONG_DESCRIPTION = 'TorchEase is a Python package that simplifies working with P
 
 #with open(os.path.join(os.path.dirname(__file__), "TorchEase", "VERSION")) as version_file:
 #    version = version_file.read().strip()
-version = "0.0.16"
+version = "0.0.17"
 
 # Setting up
 setup(
