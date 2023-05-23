@@ -73,6 +73,7 @@ class Trainer(ModelBase):
         self.epoch = 0
         self.epochs = 0
         self.train_loss = 0
+        self.total_training_time = 0
 
         # Evaluation Parameters
         self.eval_loss = None
@@ -155,6 +156,7 @@ class Trainer(ModelBase):
         Saves the PyTorch model to the specified path.
         """
         torch.save(self.model, path)
+
 
     def __str__(self):
         """
