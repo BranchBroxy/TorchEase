@@ -5,8 +5,8 @@ import os
 description = 'Simplifying working with PyTorch'
 long_description = 'TorchEase is a Python package that simplifies working with PyTorch, a popular deep learning framework. It provides a set of easy-to-use tools for training, testing, and deploying machine learning models. TorchEase includes features like early stopping, model fusing, and model evaluation, among others, which help streamline the model development process. Additionally, TorchEase is designed to be highly modular, making it easy to integrate into existing PyTorch projects.'
 
-with open(os.path.join(os.path.dirname(__file__), "TorchEase", "VERSION")) as version_file:
-    version = version_file.read().strip()
+#with open(os.path.join(os.path.dirname(__file__), "TorchEase", "VERSION")) as version_file:
+#    version = version_file.read().strip()
 version = "0.0.21"
 
 # Setting up
