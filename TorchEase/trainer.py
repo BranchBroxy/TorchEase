@@ -1,5 +1,5 @@
 import torch
-from .modelbase import ModelBase
+from .modelbase import ModelBase, measure_runtime
 class Trainer(ModelBase):
     """
     A class for training, evaluating and testing PyTorch models.
@@ -92,6 +92,7 @@ class Trainer(ModelBase):
                     break
         self.test()
 
+    @measure_runtime
     def train(self):
         """
         Trains the model on the training dataset.

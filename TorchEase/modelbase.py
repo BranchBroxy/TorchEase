@@ -60,7 +60,7 @@ class ModelBase:
 
 
         from sklearn.metrics import classification_report, confusion_matrix, roc_curve
-        print(classification_report(target, prediction))
+        print(classification_report(target, prediction, digits=4))
 
     def plot_evaluate_result(self):
         """
@@ -72,6 +72,18 @@ class ModelBase:
         df_cm = pd.DataFrame(self.cm)
         sns.heatmap(df_cm, annot=True)
         plt.show()
+
+import time
+
+def measure_runtime(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        runtime = end_time - start_time
+        print(f"Runtime of {func.__name__}: {runtime} seconds")
+        return result
+    return wrapper
 
 
 
