@@ -20,7 +20,7 @@ setup(
     long_description=long_description,
     packages=find_packages(),
     install_requires=["scikit-learn", "matplotlib", "pandas", "torch", "numpy", "scipy"],
-    keywords=['python', 'torch', 'pytorch', 'early stop', 'trainer', 'tensor'],
+    keywords=['torch', 'pytorch', 'early stop', 'trainer', 'tensor'],
     classifiers=[
         "Development Status :: 1 - Planning",
         "Intended Audience :: Developers",
