@@ -11,7 +11,7 @@ class ModelFuser(ModelBase):
     ----------
     *models : ModelBase objects
         Multiple instances of ModelBase objects to be fused.
-    test_loader : torch.utils.data.DataLoader
+    data_loader : torch.utils.data.DataLoader
         DataLoader object for test dataset.
     device : torch.device, optional
         Device to use for computation. Default is 'cuda:0' if
@@ -23,7 +23,7 @@ class ModelFuser(ModelBase):
         List of ModelBase objects.
     n_models : int
         Number of models to fuse.
-    test_loader : torch.utils.data.DataLoader
+    data_loader : torch.utils.data.DataLoader
         DataLoader object for test dataset.
     n_classes : int
         Number of classes.
@@ -48,13 +48,13 @@ class ModelFuser(ModelBase):
     >>> model_b = ModelB()
     >>> dataset = MyDataset('test')
     >>> loader = DataLoader(dataset, batch_size=32)
-    >>> fuser = ModelFuser(model_a, model_b, test_loader=loader)
+    >>> fuser = ModelFuser(model_a, model_b, data_loader=loader)
     >>> fuser.fuse()
     >>> fuser.evaluate_result()
     >>> fuser.plot_evaluate_result()
 
     """
-    def __init__(self, *models, n_classes, test_loader=None, device=torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')):
+    def __init__(self, *models, n_classes, data_loader=None, device=torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')):
         """
         Initializes the ModelFuser object.
 
@@ -62,7 +62,7 @@ class ModelFuser(ModelBase):
         ----------
         *models : ModelBase objects
             Multiple instances of ModelBase objects to be fused.
-        test_loader : torch.utils.data.DataLoader
+        data_loader : torch.utils.data.DataLoader
             DataLoader object for test dataset.
         device : torch.device, optional
             Device to use for computation. Default is 'cuda:0' if
@@ -71,10 +71,11 @@ class ModelFuser(ModelBase):
 
         self.models = models
         self.n_models = len(models)
-        self.test_loader = test_loader
+        self.data_loader = data_loader
         self.n_classes = n_classes
         self.device = device
-        assert isinstance(test_loader, torch.utils.data.DataLoader), "Loader is not of type DataLoader"
+        self.total_training_time = 0
+        assert isinstance(data_loader, torch.utils.data.DataLoader), "Loader is not of type DataLoader"
         assert isinstance(n_classes, int), "Number of classes must be specificed!"
 
     def fuse(self):
@@ -83,7 +84,7 @@ class ModelFuser(ModelBase):
         """
         import torch
         import numpy as np
-        assert self.test_loader, "Kein Testdatensatz!"
+        assert self.data_loader, "Kein Testdatensatz!"
 
         predictions = []
         targets = []
@@ -94,7 +95,7 @@ class ModelFuser(ModelBase):
             predictions_per_model = []
             targets_per_model = []
             with torch.no_grad():
-                for batch, (feature, target) in enumerate(self.test_loader):
+                for batch, (feature, target) in enumerate(self.data_loader):
                     feature, target = feature.to(self.device), target.to(self.device)
                     prediction = model(feature)
                     targets_per_model.append(target)

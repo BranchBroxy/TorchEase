@@ -26,6 +26,7 @@ class User(ModelBase):
         self.n_classes = n_classes
         self.test_loader = dataset
         self.device = device
+        self.total_training_time = 0
 
     def evaluate(self):
         """

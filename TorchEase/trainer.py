@@ -1,5 +1,5 @@
 import torch
-from .modelbase import ModelBase, measure_runtime
+from .modelbase import ModelBase, timing_decorator
 class Trainer(ModelBase):
     """
     A class for training, evaluating and testing PyTorch models.
@@ -48,10 +48,10 @@ class Trainer(ModelBase):
     >>> trainer.evaluate_result()
     >>> trainer.save_model("model.pth")
     """
-    def __init__(self, model, optimizer, loss_fn, early_stop=None, scheduler=None,
+    def __init__(self, model, optimizer, loss_fn,  n_classes, early_stop=None, scheduler=None,
                  train_loader=None, eval_loader=None, test_loader=None,
                  device=torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'),
-                 verbose: bool=True, train_verbose: bool=True, train_verbose_step: int=5, eval_verbose: bool=False, n_classes=10):
+                 verbose: bool=True, train_verbose: bool=True, train_verbose_step: int=5, eval_verbose: bool=False,):
         if not train_loader and not eval_loader:
             print("Warning: No training and validation dataloader is provided to the Trainer()")
 
@@ -92,12 +92,12 @@ class Trainer(ModelBase):
                 if self.early_stop and self.early_stop.early_stop(validation_loss=self.eval_loss, verbose=self.eval_verbose and self.verbose):
                     break
         self.test()
-
-    @measure_runtime
+    @timing_decorator
     def train(self):
         """
         Trains the model on the training dataset.
         """
+        total_batches = len(self.train_loader)
         self.model.train()
         for batch, (feature, target) in enumerate(self.train_loader):
             feature, target = feature.to(self.device), target.to(self.device)
@@ -111,7 +111,7 @@ class Trainer(ModelBase):
             self.optimizer.zero_grad()
             self.train_loss.backward()
             self.optimizer.step()
-            if self.train_verbose and (batch + 1) % int(len(self.train_loader)/self.train_verbose_step) == 0 and self.verbose:
+            if self.train_verbose and (batch + 1) % max(1, total_batches // self.train_verbose_step) == 0 and self.verbose:
                 print(f"Epoch [{self.epoch + 1}/{self.epochs}], Step [{batch + 1}/{len(self.train_loader)}], "
                       f"Loss: {self.train_loss.item():.4f}, Learning Rate {self.optimizer.param_groups[0]['lr']}")
 
